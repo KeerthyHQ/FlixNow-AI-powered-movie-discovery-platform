@@ -5,7 +5,8 @@ import {
   getMovieVideos,
   getMovieCredits,
   getSimilarMovies,
-} from "../services/tmdb";
+} from "../services/tmdb.js";
+import { getMovieSummary } from "../services/gemini.js";
 import { MovieContext } from "./Moviecontext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +27,33 @@ function MovieDetails() {
   const [error, setError] = useState("");
 
   const [showTrailer, setShowTrailer] = useState(false);
+
+  const [aiSummary, setAiSummary] = useState(null);
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [summaryError, setSummaryError] = useState("");
+
+  const handleGenerateSummary = async () => {
+    if (!movie) return;
+
+    setSummaryLoading(true);
+    setSummaryError("");
+
+    try {
+      const result = await getMovieSummary(movie);
+
+      console.log("AI Movie Summary:", result);
+
+      setAiSummary(result);
+    } catch (error) {
+      console.error("AI Summary Error:", error);
+
+      setSummaryError(
+        "AI summary is temporarily unavailable. Please try again later.",
+      );
+    } finally {
+      setSummaryLoading(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchMovieData() {
@@ -163,6 +191,29 @@ function MovieDetails() {
                 {movie.overview || "No description available."}
               </p>
 
+              {/* AI Summary */}
+              <div className="flex flex-col items-start gap-3">
+              <div className="mt-8">
+                <button
+                  onClick={handleGenerateSummary}
+                  disabled={summaryLoading}
+                  className="
+                      bg-blue-600
+                      hover:bg-blue-800
+                      disabled:bg-gray-700
+                      text-white
+                      px-6 py-3
+                      rounded-lg
+                      font-semibold
+                      transition
+                    "
+                >
+                  {summaryLoading
+                    ? "✨ Generating..."
+                    : "✨ Generate AI Summary"}
+                </button>
+              </div>
+
               {/* Buttons */}
               <div className="flex flex-wrap gap-4">
                 {/* Trailer */}
@@ -194,6 +245,7 @@ function MovieDetails() {
                     Add to Watchlist
                   </button>
                 )}
+              </div>
               </div>
             </div>
           </div>

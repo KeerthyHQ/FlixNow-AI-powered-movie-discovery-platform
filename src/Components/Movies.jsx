@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Banner from "./Banner";
-import Moviecard from "./Moviecard";
-import Pagination from "./Pagination";
+import Banner from "./Banner.jsx";
+import Moviecard from "./Moviecard.jsx";
+import Pagination from "./Pagination.jsx";
 
 import {
   getNowPlayingMovies,
   getTrendingMovies,
-} from "../services/tmdb";
+} from "../services/tmdb.js";
 
 function Movies() {
   const [movies, setMovies] = useState([]);

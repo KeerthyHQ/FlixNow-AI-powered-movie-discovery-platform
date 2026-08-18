@@ -4,6 +4,7 @@ import { MovieContext } from "./Moviecontext.jsx";
 import { useNavigate } from "react-router-dom";
 
 function Moviecard({ movieobj }) {
+  
   const navigate = useNavigate();
   const { addToWatchlist, removeFromWatchlist, watchlist } =
     useContext(MovieContext);
