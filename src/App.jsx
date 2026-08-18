@@ -4,16 +4,16 @@ import Watchlist from "./Components/Watchlist.jsx";
 import MovieDetails from "./Components/MovieDetails";
 import { MovieContext } from "./Components/Moviecontext.jsx";
 
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-
-
-
 function App() {
 
-  const [watchlist, setWatchlist] = useState([]);
+  const [watchlist, setWatchlist] = useState(() => {
+    const saved = localStorage.getItem("watchlist");
+
+    return saved ? JSON.parse(saved) : [];
+  });
 
   // add movie to watchlist
   function addToWatchlist(movie) {
@@ -33,14 +33,6 @@ function App() {
   );
   }
 
-  // LOAD FROM LOCAL STORAGE
-  useEffect(() => {
-    const saved = localStorage.getItem("watchlist");
-
-    if (saved) {
-      setWatchlist(JSON.parse(saved));
-    }
-  }, []);
 
 // Sync watchlist to localStorage whenever it changes
   useEffect(() => {
