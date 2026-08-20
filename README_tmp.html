@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="-flixnow--ai-powered-movie-discovery-platform">🎬 FlixNow — AI-Powered Movie Discovery Platform</h1>
+<p align="center">
+  <img src="file:///c:/Users/admin/Desktop/Projects/Netflix Clone/FlixNow/src/assets/logo.png" alt="FlixNow Logo" width="120"/>
+</p>
+<h3 align="center">
+  🎥 Discover Movies. 🤖 Get AI Recommendations. 🍿 Find Your Next Favorite.
+</h3>
+<p align="center">
+  An AI-powered movie discovery platform built with React, Tailwind CSS,
+  TMDB API and Google Gemini.
+</p>
+<hr>
+<h2 id="-overview">🌟 Overview</h2>
+<p><strong>FlixNow</strong> is an AI-powered movie discovery platform designed to make finding movies easier, smarter, and more personalized.</p>
+<p>Users can browse trending and now-playing movies, explore detailed movie information, manage their watchlist, watch trailers, discover movies based on their mood, and use AI-powered features to understand and explore movies.</p>
+<p>The application combines the <strong>TMDB API</strong> for movie data with <strong>Google Gemini</strong> for intelligent movie recommendations and analysis.</p>
+<hr>
+<h2 id="-live-demo">🔗 Live Demo</h2>
+<p><strong>FlixNow url :</strong> https://flixnow-ai-powered-movie-discovery-platform-a32vi43uz.vercel.app/</p>
+<p><strong>GitHub Repository:</strong> https://github.com/KeerthyHQ/FlixNow-AI-powered-movie-discovery-platform</p>
+<h2 id="-features">✨ Features</h2>
+<h3 id="-movie-discovery">🎬 Movie Discovery</h3>
+<ul>
+<li>🔥 Trending movie banner</li>
+<li>🎥 Now Playing movies</li>
+<li>📄 Pagination</li>
+<li>🖼️ Movie posters</li>
+<li>⭐ Movie ratings</li>
+<li>🔥 Movie popularity</li>
+<li>🔎 Movie search</li>
+<li>🎭 Genre-based discovery</li>
+<li>⏱️ Runtime-based movie filtering</li>
+<li>🎯 Smart movie discovery</li>
+</ul>
+<hr>
+<h3 id="-mood-based-movie-discovery">🎭 Mood-Based Movie Discovery</h3>
+<p>Tell FlixNow how you're feeling and discover movies that match your mood.</p>
+<p>Available moods include:</p>
+<ul>
+<li>😄 Happy &amp; Energetic</li>
+<li>😢 Melancholic</li>
+<li>🤩 Thrilled &amp; Adventurous</li>
+<li>😌 Chill &amp; Relaxed</li>
+<li>🤔 Curious &amp; Thoughtful</li>
+<li>🥺 Nostalgic</li>
+<li>😱 Brave &amp; Daring</li>
+<li>💕 Romantic</li>
+</ul>
+<p>The AI analyzes the selected mood and recommends movies based on:</p>
+<ul>
+<li>🎭 Genres</li>
+<li>🧠 Mood keywords</li>
+<li>💭 Emotional tone</li>
+<li>🎬 Movie themes</li>
+</ul>
+<hr>
+<h3 id="-ai-movie-recommendations">🤖 AI Movie Recommendations</h3>
+<p>FlixNow can analyze movies in the user's watchlist and generate personalized recommendations.</p>
+<p>The AI provides:</p>
+<ul>
+<li>🎬 Recommended movie</li>
+<li>💡 Reason for recommendation</li>
+<li>📊 Confidence score</li>
+<li>🧠 User taste summary</li>
+</ul>
+<hr>
+<h3 id="-smart-search">🔎 Smart Search</h3>
+<p>FlixNow provides intelligent movie discovery using customizable filters.</p>
+<p>Users can discover movies based on:</p>
+<ul>
+<li>🎭 Genre</li>
+<li>⭐ Rating</li>
+<li>🔥 Popularity</li>
+<li>⏱️ Runtime</li>
+<li>📅 Release information</li>
+<li>🎯 Sorting preferences</li>
+</ul>
+<p>This makes it easier to find movies that match specific preferences.</p>
+<hr>
+<h3 id="-ai-movie-summary">📝 AI Movie Summary</h3>
+<p>Users can generate a concise AI-powered summary of a movie.</p>
+<p>The AI analyzes movie information and provides:</p>
+<ul>
+<li>📝 Quick summary</li>
+<li>🎯 Main themes</li>
+<li>🍿 Why you might enjoy the movie</li>
+</ul>
+<hr>
+<h3 id="-ai-climax--ending-explanation">😱 AI Climax &amp; Ending Explanation</h3>
+<p>Want to know how the movie ends?</p>
+<p>FlixNow provides an optional AI-powered spoiler feature.</p>
+<p>Users must explicitly confirm before viewing spoilers.</p>
+<p>The feature provides:</p>
+<ul>
+<li>🔥 Climax explanation</li>
+<li>🎬 Ending explanation</li>
+<li>💡 Ending meaning</li>
+<li>⚠️ Spoiler warning</li>
+</ul>
+<blockquote>
+<p>🚨 <strong>Spoilers are shown only after user confirmation.</strong></p>
+</blockquote>
+<hr>
+<h3 id="️-movie-details">🎞️ Movie Details</h3>
+<p>Each movie has a dedicated details page containing:</p>
+<ul>
+<li>🎬 Movie title</li>
+<li>📝 Overview</li>
+<li>⭐ Rating</li>
+<li>🔥 Popularity</li>
+<li>📅 Release date</li>
+<li>⏱️ Runtime</li>
+<li>🎭 Genres</li>
+<li>▶️ Trailer</li>
+<li>👥 Cast</li>
+<li>🎥 Crew</li>
+<li>🎞️ Similar movies</li>
+<li>⭐ Best review</li>
+<li>🤖 AI summary</li>
+<li>😱 AI climax explanation</li>
+</ul>
+<hr>
+<h3 id="️-movie-trailers">▶️ Movie Trailers</h3>
+<p>Users can watch movie trailers directly inside FlixNow.</p>
+<p>Trailer data is retrieved using TMDB and displayed through YouTube.</p>
+<p>Features include:</p>
+<ul>
+<li>▶️ Trailer playback</li>
+<li>🖥️ Full-screen support</li>
+<li>❌ Closeable trailer modal</li>
+<li>🎬 Movie-specific trailer</li>
+</ul>
+<hr>
+<h3 id="-cast--crew">👥 Cast &amp; Crew</h3>
+<p>Movie details include information about the people involved in the movie.</p>
+<p>Users can explore:</p>
+<ul>
+<li>👤 Actors</li>
+<li>🎬 Directors</li>
+<li>✍️ Writers</li>
+<li>🎥 Crew members</li>
+</ul>
+<hr>
+<h3 id="-best-review">⭐ Best Review</h3>
+<p>FlixNow retrieves movie reviews and identifies a highly rated review.</p>
+<p>The feature considers:</p>
+<ul>
+<li>⭐ Review rating</li>
+<li>📝 Review content</li>
+<li>👤 Reviewer</li>
+</ul>
+<p>Users can quickly access a highlighted review without manually searching through all available reviews.</p>
+<hr>
+<h3 id="-watchlist">🔖 Watchlist</h3>
+<p>Users can create their own personal movie watchlist.</p>
+<p>Features include:</p>
+<ul>
+<li>➕ Add movie</li>
+<li>❌ Remove movie</li>
+<li>🔍 Search watchlist</li>
+<li>🎭 Filter by genre</li>
+<li>⭐ Sort by rating</li>
+<li>🔥 Sort by popularity</li>
+<li>💾 Persistent storage using LocalStorage</li>
+</ul>
+<p>The watchlist remains available even after refreshing the browser.</p>
+<hr>
+<h1 id="-ai-features">🧠 AI Features</h1>
+<p>FlixNow uses <strong>Google Gemini</strong> to provide intelligent movie experiences.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🎭 Mood Picker</td>
+<td>Recommend movies based on mood</td>
+</tr>
+<tr>
+<td>🤖 Watchlist Recommendations</td>
+<td>Learn user's movie taste</td>
+</tr>
+<tr>
+<td>📝 AI Summary</td>
+<td>Generate movie summaries</td>
+</tr>
+<tr>
+<td>😱 AI Climax</td>
+<td>Explain climax and ending</td>
+</tr>
+<tr>
+<td>🔎 Smart Search</td>
+<td>Intelligent movie discovery</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="️-tech-stack">🛠️ Tech Stack</h1>
+<h2 id="-frontend">🎨 Frontend</h2>
+<ul>
+<li>⚛️ React</li>
+<li>🟨 JavaScript</li>
+<li>🎨 Tailwind CSS</li>
+<li>🧭 React Router</li>
+<li>📡 Axios</li>
+<li>⚡ Vite</li>
+</ul>
+<h2 id="-movie-data">🎬 Movie Data</h2>
+<p><strong>TMDB API</strong></p>
+<p>Used for:</p>
+<ul>
+<li>Movie discovery</li>
+<li>Movie search</li>
+<li>Movie details</li>
+<li>Trending movies</li>
+<li>Now Playing movies</li>
+<li>Movie videos</li>
+<li>Cast &amp; crew</li>
+<li>Similar movies</li>
+<li>Reviews</li>
+</ul>
+<h2 id="-artificial-intelligence">🤖 Artificial Intelligence</h2>
+<p><strong>Google Gemini API</strong></p>
+<p>Used for:</p>
+<ul>
+<li>Mood-based recommendations</li>
+<li>Personalized recommendations</li>
+<li>AI movie summaries</li>
+<li>Climax and ending explanations</li>
+</ul>
+<h2 id="-storage">💾 Storage</h2>
+<p><strong>Browser LocalStorage</strong></p>
+<p>Used to persist the user's watchlist locally.</p>
+<hr>
+<h1 id="-project-structure">📁 Project Structure</h1>
+<pre class="hljs"><code><div>FlixNow/
+│
+├── public/
+│
+├── src/
+│   │
+│   ├── assets/
+│   │   └── logo.png
+│   │
+│   ├── Components/
+│   │   ├── Banner.jsx
+│   │   ├── Moviecard.jsx
+│   │   ├── Movies.jsx
+│   │   ├── MovieDetails.jsx
+│   │   ├── Watchlist.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── MoodSelector.jsx
+│   │   ├── MovieRecommendations.jsx
+│   │   ├── SmartSearch.jsx
+│   │   ├── Pagination.jsx
+│   │   └── Moviecontext.jsx
+│   │
+│   ├── services/
+│   │   ├── tmdb.js
+│   │   └── gemini.js
+│   │
+│   ├── utility/
+│   │   ├── moods.js
+│   │   └── genreid.js
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+│
+├── .env
+├── .gitignore
+├── package.json
+├── vite.config.js
+└── README.md
+</div></code></pre>
+<hr>
+<h1 id="-getting-started">🚀 Getting Started</h1>
+<p>Follow these steps to run FlixNow locally.</p>
+<h2 id="1️⃣-clone-the-repository">1️⃣ Clone the Repository</h2>
+<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> https://github.com/KeerthyHQ/FlixNow-AI-powered-movie-discovery-platform.git
+</div></code></pre>
+<p>Navigate into the project:</p>
+<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> FlixNow-AI-powered-movie-discovery-platform
+</div></code></pre>
+<hr>
+<h2 id="2️⃣-install-dependencies">2️⃣ Install Dependencies</h2>
+<p>Install all required npm packages:</p>
+<pre class="hljs"><code><div>npm install
+</div></code></pre>
+<hr>
+<h2 id="3️⃣-get-your-api-keys">3️⃣ Get Your API Keys</h2>
+<p>FlixNow requires two APIs:</p>
+<h3 id="-tmdb-api">🎬 TMDB API</h3>
+<p>Create a TMDB account and generate an API key from the TMDB developer dashboard.</p>
+<p>You need the API key for retrieving movie information.</p>
+<h3 id="-google-gemini-api">🤖 Google Gemini API</h3>
+<p>Create a Gemini API key from Google AI Studio.</p>
+<p>The Gemini API is used for the AI-powered movie features.</p>
+<hr>
+<h2 id="4️⃣-configure-environment-variables">4️⃣ Configure Environment Variables</h2>
+<p>Create a <code>.env</code> file in the root directory:</p>
+<pre class="hljs"><code><div>VITE_TMDB_API_KEY=your_tmdb_api_key
+VITE_GEMINI_API_KEY=your_gemini_api_key
+</div></code></pre>
+<p>Replace the placeholder values with your actual API keys.</p>
+<blockquote>
+<p>⚠️ <strong>Important:</strong> Never commit your <code>.env</code> file to GitHub.</p>
+</blockquote>
+<p>Make sure <code>.gitignore</code> contains:</p>
+<pre class="hljs"><code><div>node_modules/
+.env
+dist/
+</div></code></pre>
+<hr>
+<h2 id="5️⃣-start-the-development-server">5️⃣ Start the Development Server</h2>
+<p>Run:</p>
+<pre class="hljs"><code><div>npm run dev
+</div></code></pre>
+<p>Vite will start the development server.</p>
+<p>Open the URL shown in your terminal, usually:</p>
+<pre class="hljs"><code><div>http://localhost:5173
+</div></code></pre>
+<p>🎉 <strong>FlixNow is now running !</strong></p>
+<hr>
+<h1 id="-how-to-use-flixnow">🎯 How to Use FlixNow</h1>
+<h3 id="-discover-movies">🔎 Discover Movies</h3>
+<p>Browse trending and currently playing movies from the home page.</p>
+<h3 id="-search">🔍 Search</h3>
+<p>Use the search functionality to find movies by title.</p>
+<h3 id="-explore-by-mood">🎭 Explore by Mood</h3>
+<p>Select a mood and let AI recommend movies that match your current feeling.</p>
+<h3 id="-use-smart-search">🧠 Use Smart Search</h3>
+<p>Apply filters such as genre, rating, popularity, runtime, and sorting preferences.</p>
+<h3 id="-explore-movie-details">🎬 Explore Movie Details</h3>
+<p>Select any movie to view:</p>
+<ul>
+<li>Movie information</li>
+<li>Rating</li>
+<li>Genres</li>
+<li>Runtime</li>
+<li>Cast</li>
+<li>Crew</li>
+<li>Reviews</li>
+<li>Similar movies</li>
+<li>Trailer</li>
+</ul>
+<h3 id="-generate-ai-summary">🤖 Generate AI Summary</h3>
+<p>Use the AI summary feature to get a quick explanation of the movie.</p>
+<h3 id="-explore-the-ending">😱 Explore the Ending</h3>
+<p>If you want spoilers, confirm the spoiler warning to reveal the AI-generated climax and ending explanation.</p>
+<h3 id="-build-your-watchlist">🔖 Build Your Watchlist</h3>
+<p>Add movies you want to watch later.</p>
+<p>Your watchlist is stored in <strong>LocalStorage</strong>, so it remains available after refreshing the page.</p>
+<h3 id="-get-personalized-recommendations">🤖 Get Personalized Recommendations</h3>
+<p>Add movies to your watchlist and use the AI recommendation feature to discover movies based on your movie taste.</p>
+<hr>
+<h1 id="-environment-variables">🔐 Environment Variables</h1>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VITE_TMDB_API_KEY</code></td>
+<td>API key used to access TMDB</td>
+</tr>
+<tr>
+<td><code>VITE_GEMINI_API_KEY</code></td>
+<td>API key used for Gemini AI features</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🔒 Keep API keys private and never upload your <code>.env</code> file to GitHub.</p>
+</blockquote>
+<hr>
+<h1 id="-available-scripts">📦 Available Scripts</h1>
+<p>Run these commands from the project directory:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm install</code></td>
+<td>Install dependencies</td>
+</tr>
+<tr>
+<td><code>npm run dev</code></td>
+<td>Start development server</td>
+</tr>
+<tr>
+<td><code>npm run build</code></td>
+<td>Create production build</td>
+</tr>
+<tr>
+<td><code>npm run preview</code></td>
+<td>Preview production build</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="-deployment">🌐 Deployment</h1>
+<p>FlixNow can be deployed using platforms such as:</p>
+<ul>
+<li>▲ Vercel</li>
+<li>🌐 Netlify</li>
+<li>🟪 Render</li>
+<li>🟦 GitHub Pages</li>
+</ul>
+<p>For deployment, make sure the required environment variables are configured in the hosting platform.</p>
+<hr>
+<h1 id="-security-notes">🔒 Security Notes</h1>
+<p>This project uses Vite environment variables.</p>
+<p>Remember:</p>
+<blockquote>
+<p>⚠️ Variables prefixed with <code>VITE_</code> are exposed to the client-side application.</p>
+</blockquote>
+<p>Therefore, API keys used in a frontend-only project should be treated as publicly accessible.</p>
+<p>For a production application, sensitive API operations should ideally be handled through a backend/server-side proxy.</p>
+<hr>
+<h1 id="-future-improvements">🚧 Future Improvements</h1>
+<p>Some potential improvements for future versions include:</p>
+<ul>
+<li>🔐 User authentication</li>
+<li>☁️ Cloud-based watchlist</li>
+<li>👤 User profiles</li>
+<li>❤️ Personalized movie preferences</li>
+<li>🧠 More advanced AI recommendations</li>
+<li>🎯 AI-powered movie search</li>
+<li>💬 AI movie chatbot</li>
+<li>📊 Movie recommendation history</li>
+<li>🌙 Dark/light theme customization</li>
+<li>📱 Improved mobile responsiveness</li>
+<li>🔔 Personalized movie notifications</li>
+<li>🎬 Streaming platform availability</li>
+<li>🌍 Multi-language support</li>
+</ul>
+<hr>
+<h1 id="-what-i-learned">💡 What I Learned</h1>
+<p>Building FlixNow helped me strengthen my understanding of:</p>
+<ul>
+<li>⚛️ React component architecture</li>
+<li>🪝 React Hooks</li>
+<li>🧠 State management</li>
+<li>🔄 API integration</li>
+<li>📡 Axios</li>
+<li>🧭 React Router</li>
+<li>🎨 Tailwind CSS</li>
+<li>🔐 Environment variables</li>
+<li>💾 LocalStorage</li>
+<li>🤖 Generative AI integration</li>
+<li>🎬 TMDB API</li>
+<li>🔎 Search and filtering</li>
+<li>📄 Pagination</li>
+<li>🧩 Reusable components</li>
+<li>⚡ Asynchronous JavaScript</li>
+<li>🚀 Vite and frontend deployment</li>
+</ul>
+<hr>
+<h1 id="-project-highlights">🏆 Project Highlights</h1>
+<h3 id="-ai-powered-movie-discovery">⭐ AI-Powered Movie Discovery</h3>
+<p>Instead of relying only on traditional filters, FlixNow uses AI to provide personalized movie discovery.</p>
+<h3 id="-mood-based-recommendations">🎭 Mood-Based Recommendations</h3>
+<p>Users can discover movies based on how they feel rather than only searching by genre.</p>
+<h3 id="-personalized-watchlist-recommendations">🤖 Personalized Watchlist Recommendations</h3>
+<p>The application analyzes the user's watchlist to understand their movie preferences.</p>
+<h3 id="-spoiler-controlled-ai-ending">😱 Spoiler-Controlled AI Ending</h3>
+<p>The climax and ending explanation is protected behind an explicit spoiler confirmation.</p>
+<h3 id="-complete-movie-experience">🎬 Complete Movie Experience</h3>
+<p>FlixNow combines movie discovery, trailers, reviews, cast, crew, similar movies, watchlists, and AI features into one platform.</p>
+<hr>
+<h1 id="-screenshots">📸 Screenshots</h1>
+<pre class="hljs"><code><div>screenshots/
+├── home.png
+├── movie-details.png
+├── mood-selector.png
+├── smart-search.png
+├── watchlist.png
+└── ai-recommendations.png
+</div></code></pre>
+<h3 id="home">Home</h3>
+<p><img src="file:///c:/Users/admin/Desktop/Projects/Netflix Clone/FlixNow/src/screenshots/home.png" alt="Home Page"></p>
+<hr>
+<h3 id="movie-details">Movie Details</h3>
+<p><img src="file:///c:/Users/admin/Desktop/Projects/Netflix Clone/FlixNow/src/screenshots/movie-details.png" alt="Movie Details"></p>
+<hr>
+<h3 id="watchlist">watchlist</h3>
+<p><img src="file:///c:/Users/admin/Desktop/Projects/Netflix Clone/FlixNow/src/screenshots/watchlist.png" alt="Watchlist"></p>
+<hr>
+<h3 id="mood-selector">Mood Selector</h3>
+<h2 id="mood-selector-1"><img src="file:///c:/Users/admin/Desktop/Projects/Netflix Clone/FlixNow/src/screenshots/mood-selector.png" alt="Mood selector"></h2>
+<h3 id="smart-search">smart search</h3>
+<p><img src="file:///c:/Users/admin/Desktop/Projects/Netflix Clone/FlixNow/src/screenshots/smart-search.png" alt="Smart search"></p>
+<hr>
+<h3 id="ai-recommendations">AI Recommendations</h3>
+<p><img src="file:///c:/Users/admin/Desktop/Projects/Netflix Clone/FlixNow/screenshots/ai-recommendations.png" alt="AI Recommendations"></p>
+<hr>
+<h1 id="-contributing">🙌 Contributing</h1>
+<p>Contributions, suggestions, and improvements are welcome!</p>
+<ol>
+<li>Fork the repository</li>
+<li>Create a new branch</li>
+</ol>
+<pre class="hljs"><code><div>git checkout -b feature/your-feature
+</div></code></pre>
+<ol start="3">
+<li>Make your changes</li>
+<li>Commit your changes</li>
+</ol>
+<pre class="hljs"><code><div>git add .
+git commit -m <span class="hljs-string">&quot;Add new feature&quot;</span>
+</div></code></pre>
+<ol start="5">
+<li>Push the branch</li>
+</ol>
+<pre class="hljs"><code><div>git push origin feature/your-feature
+</div></code></pre>
+<ol start="6">
+<li>Open a Pull Request</li>
+</ol>
+<hr>
+<h1 id="-license">📄 License</h1>
+<p>This project is created for educational and portfolio purposes.</p>
+<p>Movie data is provided by <strong>TMDB</strong>.</p>
+<hr>
+<h1 id="-author">👩‍💻 Author</h1>
+<h3 id="keerthika-m">Keerthika M</h3>
+<p>💻 Full Stack Developer | React Developer | AI Enthusiast</p>
+<h3 id="-connect-with-me">🔗 Connect With Me</h3>
+<ul>
+<li>💼 https://www.linkedin.com/in/keerthika-m-3b51b9127/</li>
+<li>🐙 https://github.com/KeerthyHQ</li>
+<li>📧 mailto:keerthy.builds@gmail.com</li>
+</ul>
+<hr>
+<p align="center">
+<h3 id="-made-with-️-using-react-tmdb--google-gemini">🎬 Made with ❤️ using React, TMDB &amp; Google Gemini</h3>
+<p>⭐ If you found FlixNow interesting, consider giving the repository a star!</p>
+</p>
+
+</body>
+</html>
+ry</li>
+<li>Create a new branch</li>
+</ol>
+<pre class="hljs"><code><div>git checkout -b feature/your-feature
+</div></code></pre>
+<ol start="3">
+<li>Make your changes</li>
+<li>Commit your changes</li>
+</ol>
+<pre class="hljs"><code><div>git add .
+git commit -m <span class="hljs-string">"Add new feature"</span>
+</div></code></pre>
+<ol start="5">
+<li>Push the branch</li>
+</ol>
+<pre class="hljs"><code><div>git push origin feature/your-feature
+</div></code></pre>
+<ol start="6">
+<li>Open a Pull Request</li>
+</ol>
+<hr>
+<h1 id="%F0%9F%93%84-license">📄 License</h1>
+<p>This project is created for educational and portfolio purposes.</p>
+<p>Movie data is provided by <strong>TMDB</strong>.</p>
+<hr>
+<h1 id="%F0%9F%91%A9%E2%80%8D%F0%9F%92%BB-author">👩‍💻 Author</h1>
+<h3 id="keerthika-m">Keerthika M</h3>
+<p>💻 Full Stack Developer | React Developer | AI Enthusiast</p>
+<h3 id="%F0%9F%94%97-connect-with-me">🔗 Connect With Me</h3>
+<ul>
+<li>💼 https://www.linkedin.com/in/keerthika-m-3b51b9127/</li>
+<li>🐙 https://github.com/KeerthyHQ</li>
+<li>📧 mailto:keerthy.builds@gmail.com</li>
+</ul>
+<hr>
+<p align="center">
+</p><h3 id="%F0%9F%8E%AC-made-with-%E2%9D%A4%EF%B8%8F-using-react-tmdb--google-gemini">🎬 Made with ❤️ using React, TMDB &amp; Google Gemini</h3>
+<p>⭐ If you found FlixNow interesting, consider giving the repository a star!</p>
+<p></p>
+
+</body>
+
+</html>
