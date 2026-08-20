@@ -29,9 +29,7 @@ function MoodSelector() {
       // STEP 2: Search each recommended movie in TMDB
       const moviePromises = aiResult.movies.map(
         async (recommendation) => {
-          const data = await searchMovies(
-            recommendation.title
-          );
+          const data = await searchMovies(recommendation.title);
 
           const movie = data.results?.[0];
 
@@ -253,7 +251,7 @@ function MoodSelector() {
                 className="w-40"
               >
 
-                {/* Your existing MovieCard */}
+                {/* MovieCard */}
                 <Moviecard
                   movieobj={movie}
                 />

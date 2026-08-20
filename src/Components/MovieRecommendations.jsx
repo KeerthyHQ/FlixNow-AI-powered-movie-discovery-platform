@@ -31,7 +31,7 @@ function MovieRecommendations() {
 
       // 1. Ask Gemini to understand the user's taste
       const aiResult =
-        await getMovieRecommendations(watchlist);
+      await getMovieRecommendations(watchlist);
 
       console.log(
         "Gemini Recommendation Result:",

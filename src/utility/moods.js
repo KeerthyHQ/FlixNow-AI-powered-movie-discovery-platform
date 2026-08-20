@@ -1,5 +1,3 @@
-// src/utility/moods.js
-
 export const moods = [
   {
     id: 'happy',

@@ -146,6 +146,70 @@ Rules:
   }
 };
 
+// Generate climax and ending explanation
+export const getMovieClimax = async (movie) => {
+
+  const prompt = `
+You are an AI movie spoiler assistant for FlixNow.
+
+The user has explicitly requested the climax and ending
+of this movie:
+
+Movie title: ${movie.title}
+
+Release date: ${movie.release_date || "Unknown"}
+
+Movie overview:
+${movie.overview || "No overview available."}
+
+Explain the climax and ending of the movie.
+
+Return ONLY valid JSON in exactly this format:
+
+{
+  "climax": "Explanation of what happens during the climax",
+  "ending": "Explanation of how the movie ends",
+  "meaning": "Explanation of what the ending means"
+}
+
+Rules:
+- The user has explicitly requested spoilers.
+- Include major twists and important final events.
+- Clearly explain the climax.
+- Clearly explain the ending.
+- Do not give a spoiler-free response.
+- Do not invent events or details.
+- If you are uncertain about a detail, do not make it up.
+- Do not include markdown.
+`;
+
+  try {
+
+    const response = await getGeminiResponse(prompt);
+
+    const cleanedResponse = response
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    return JSON.parse(cleanedResponse);
+
+  } catch (error) {
+
+    console.error(
+      "Movie climax error:",
+      error
+    );
+
+    return {
+      climax: "",
+      ending: "",
+      meaning: "",
+    };
+  }
+};
+
+
 //smart search 
 export const parseSmartSearch = async (query) => {
   const prompt = `

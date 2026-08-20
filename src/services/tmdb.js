@@ -1,5 +1,5 @@
 import axios from "axios";
-import { genreids } from "../genreid.js";
+import { genreids } from "../utility/genreid.js";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -82,12 +82,8 @@ export const searchMovies = async (query) => {
 // Discover Movies by smart search filters
 export const discoverMovies = async (filters) => {
 
-  const genreIds = filters.genres
-    .map(
-      genre =>
-        genreNameToId[genre.toLowerCase()]
-    )
-    .filter(Boolean);
+  const genreIds = filters.genres.map(genre => genreNameToId[genre.toLowerCase()]
+    ).filter(Boolean);
 
   const response = await api.get("/discover/movie", {
     params: {
@@ -99,8 +95,7 @@ export const discoverMovies = async (filters) => {
       }),
 
       ...(filters.minRating !== null && {
-        "vote_average.gte":
-          filters.minRating,
+        "vote_average.gte": filters.minRating,
       }),
 
       ...(filters.maxRuntime !== null && {
@@ -126,4 +121,15 @@ export const discoverMovies = async (filters) => {
   });
 
   return response.data || {};
+};
+
+//get movie review
+export const getMovieReviews = async (movieId) => {
+
+  const response = await api.get(
+    `/movie/${movieId}/reviews`
+  );
+
+  return response.data || {};
+
 };

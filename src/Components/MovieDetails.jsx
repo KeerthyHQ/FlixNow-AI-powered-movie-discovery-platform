@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
   getMovieDetails,
@@ -6,7 +6,9 @@ import {
   getMovieCredits,
   getSimilarMovies,
 } from "../services/tmdb.js";
-import { getMovieSummary } from "../services/gemini.js";
+import { getMovieSummary, getMovieClimax } from "../services/gemini.js";
+
+import { getMovieReviews } from "../services/tmdb.js";
 import { MovieContext } from "./Moviecontext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +19,8 @@ function MovieDetails() {
     useContext(MovieContext);
 
   const navigate = useNavigate();
+  const bestReviewRef = useRef(null);
+  const climaxRef = useRef(null);
 
   const [movie, setMovie] = useState(null);
   const [videos, setVideos] = useState([]);
@@ -31,6 +35,14 @@ function MovieDetails() {
   const [aiSummary, setAiSummary] = useState(null);
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [summaryError, setSummaryError] = useState("");
+
+  const [bestReview, setBestReview] = useState(null);
+  const [reviewLoading, setReviewLoading] = useState(false);
+
+  const [climax, setClimax] = useState(null);
+  const [climaxLoading, setClimaxLoading] = useState(false);
+  const [climaxError, setClimaxError] = useState("");
+  const [showSpoilerWarning, setShowSpoilerWarning] = useState(false);
 
   const handleGenerateSummary = async () => {
     if (!movie) return;
@@ -85,10 +97,100 @@ function MovieDetails() {
     fetchMovieData();
   }, [id]);
 
+  // Fetch the best review
+  useEffect(() => {
+    if (bestReview) {
+      bestReviewRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [bestReview]);
+
+  async function handleBestReview() {
+    if (!movie) return;
+
+    setReviewLoading(true);
+
+    try {
+      const data = await getMovieReviews(movie.id);
+
+      const reviews = data.results || [];
+
+      if (reviews.length === 0) {
+        setBestReview(null);
+        return;
+      }
+      const sortedReviews = [...reviews].sort(
+        (a, b) =>
+          (b.author_details?.rating ?? 0) - (a.author_details?.rating ?? 0) ||
+          (b.content?.length || 0) - (a.content?.length || 0),
+      );
+
+      setBestReview(sortedReviews[0]);
+    } catch (error) {
+      console.error("Review error:", error);
+    } finally {
+      setReviewLoading(false);
+    }
+  }
+  //climax and reveal ending
+  useEffect(() => {
+  if (climax) {
+    climaxRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+}, [climax]);
+  const handleGenerateClimax = async () => {
+    if (!movie) return;
+
+    setClimaxLoading(true);
+    setClimaxError("");
+
+    try {
+      const result = await getMovieClimax(movie);
+
+      console.log("AI Climax:", result);
+
+      setClimax(result);
+      setShowSpoilerWarning(false);
+    } catch (error) {
+      console.error("AI Climax Error:", error);
+
+      setClimaxError("Climax is temporarily unavailable. Please try again.");
+    } finally {
+      setClimaxLoading(false);
+    }
+  };
+
+  // Check if the movie is already in the watchlist
+  const isInWatchlist = watchlist.some((movieObj) => movieObj.id === movie?.id);
+
+  const trailer = videos.find(
+    (video) => video.site === "YouTube" && video.type === "Trailer",
+  );
+
+  //extracting runtime
+  const hours = Math.floor(movie?.runtime / 60);
+  const minutes = movie?.runtime % 60;
+
+  //directors and writers
+  const directors = credits?.crew?.filter(
+    (person) => person.job === "Director",
+  );
+
+  const writers = credits?.crew?.filter(
+    (person) => person.job === "Writer" || person.job === "Screenplay",
+  );
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#141414] flex justify-center items-center">
-        <h1 className="text-white text-2xl">Loading movie details...</h1>
+      <div className="min-h-screen bg-[#141414] flex flex-col justify-center items-center">
+        <div className="w-12 h-12 border-4 border-gray-600 border-t-red-600 rounded-full animate-spin"></div>
+
+        <h1 className="text-white text-2xl mt-4">Loading movie details...</h1>
       </div>
     );
   }
@@ -110,23 +212,6 @@ function MovieDetails() {
       </div>
     );
   }
-
-  const isInWatchlist = watchlist.some((movieObj) => movieObj.id === movie.id);
-
-  const trailer = videos.find(
-    (video) => video.site === "YouTube" && video.type === "Trailer",
-  );
-
-  const hours = Math.floor(movie.runtime / 60);
-  const minutes = movie.runtime % 60;
-
-  const directors = credits?.crew?.filter(
-    (person) => person.job === "Director",
-  );
-
-  const writers = credits?.crew?.filter(
-    (person) => person.job === "Writer" || person.job === "Screenplay",
-  );
 
   return (
     <div className="min-h-screen bg-[#141414] text-white">
@@ -193,11 +278,11 @@ function MovieDetails() {
 
               {/* AI Summary */}
               <div className="flex flex-col items-start gap-3">
-              <div className="mt-8">
-                <button
-                  onClick={handleGenerateSummary}
-                  disabled={summaryLoading}
-                  className="
+                <div className="mt-8">
+                  <button
+                    onClick={handleGenerateSummary}
+                    disabled={summaryLoading}
+                    className="
                       bg-blue-600
                       hover:bg-blue-800
                       disabled:bg-gray-700
@@ -207,50 +292,186 @@ function MovieDetails() {
                       font-semibold
                       transition
                     "
-                >
-                  {summaryLoading
-                    ? "✨ Generating..."
-                    : "✨ Generate AI Summary"}
-                </button>
-              </div>
-
-              {/* Buttons */}
-              <div className="flex flex-wrap gap-4">
-                {/* Trailer */}
-                {trailer && (
-                  <button
-                    onClick={() => setShowTrailer(true)}
-                    className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition"
                   >
-                    <i className="fa-solid fa-play mr-2"></i>
-                    Watch Trailer
+                    {summaryLoading
+                      ? "✨ Generating..."
+                      : "✨ Generate AI Summary"}
                   </button>
+                </div>
+
+                {/*spoiler alert*/}
+
+                {showSpoilerWarning && (
+                  <div
+                    className="
+                      fixed inset-0
+                      z-50
+                      bg-black/80
+                      flex
+                      items-center
+                      justify-center
+                      p-5
+                    "
+                  >
+                    <div
+                      className="
+                        bg-[#1f1f1f]
+                        border border-red-600
+                        rounded-xl
+                        p-8
+                        max-w-md
+                        text-center
+                        shadow-2xl
+                      "
+                    >
+                      <div className="text-5xl mb-4">⚠️</div>
+
+                      <h2 className="text-2xl font-bold mb-4">
+                        Major Spoilers Ahead!
+                      </h2>
+
+                      <p className="text-gray-400 mb-6">
+                        This will reveal the climax, major twists and ending of{" "}
+                        <b>{movie.title}</b>.
+                      </p>
+
+                      <div className="flex justify-center gap-4">
+                        <button
+                          onClick={() => setShowSpoilerWarning(false)}
+                          className="
+                            bg-gray-700
+                            hover:bg-gray-600
+                            px-5 py-2
+                            rounded-lg
+                          "
+                        >
+                          Cancel
+                        </button>
+
+                        <button
+                          onClick={handleGenerateClimax}
+                          className="
+                            bg-red-600
+                            hover:bg-red-700
+                            px-5 py-2
+                            rounded-lg
+                            font-semibold
+                          "
+                        >
+                          Reveal Spoilers
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 )}
 
-                {/* Watchlist */}
-                {isInWatchlist ? (
+                <div className="flex gap-4">
+                  {/*spoiler button  */}
                   <button
-                    onClick={() => removeFromWatchlist(movie)}
-                    className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition"
+                    onClick={() => setShowSpoilerWarning(true)}
+                    disabled={climaxLoading}
+                    className="
+                  bg-purple-700
+                  hover:bg-purple-800
+                  disabled:bg-gray-700
+                  text-white
+                  px-6 py-3
+                  rounded-lg
+                  font-semibold
+                  transition
+                "
                   >
-                    <i className="fa-solid fa-check mr-2"></i>
-                    Added to Watchlist
+                    {climaxLoading
+                      ? "😱 Analyzing Ending..."
+                      : "😱 Reveal Climax"}
                   </button>
-                ) : (
+
+                  {/*Best Review button  */}
+
                   <button
-                    onClick={() => addToWatchlist(movie)}
-                    className="bg-gray-700 hover:bg-gray-800 px-6 py-3 rounded-lg font-semibold transition"
+                    onClick={handleBestReview}
+                    disabled={reviewLoading}
+                    className="bg-yellow-600 hover:bg-yellow-700 px-5 py-3 rounded-lg font-semibold"
                   >
-                    <i className="fa-solid fa-plus mr-2"></i>
-                    Add to Watchlist
+                    ⭐ {reviewLoading ? "Finding Review..." : "Best Review"}
                   </button>
-                )}
-              </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex flex-wrap gap-4">
+                  {/* Trailer */}
+                  {trailer && (
+                    <button
+                      onClick={() => setShowTrailer(true)}
+                      className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition"
+                    >
+                      <i className="fa-solid fa-play mr-2"></i>
+                      Watch Trailer
+                    </button>
+                  )}
+
+                  {/* Watchlist */}
+                  {isInWatchlist ? (
+                    <button
+                      onClick={() => removeFromWatchlist(movie)}
+                      className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition"
+                    >
+                      <i className="fa-solid fa-check mr-2"></i>
+                      Added to Watchlist
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => addToWatchlist(movie)}
+                      className="bg-gray-700 hover:bg-gray-800 px-6 py-3 rounded-lg font-semibold transition"
+                    >
+                      <i className="fa-solid fa-plus mr-2"></i>
+                      Add to Watchlist
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/*Climax Section */}
+      {climax && (
+        <div
+          ref={climaxRef}
+          className="
+            mt-8
+            bg-[#1f1f1f]
+            border border-purple-800
+            rounded-xl
+            p-6
+          "
+        >
+          <h2 className="text-2xl font-bold text-purple-400 mb-6">
+            😱 Climax & Ending
+          </h2>
+
+          <div className="mb-6">
+            <h3 className="text-lg font-bold mb-2">🔥 The Climax</h3>
+
+            <p className="text-gray-300 leading-relaxed">{climax.climax}</p>
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-lg font-bold mb-2">🎬 The Ending</h3>
+
+            <p className="text-gray-300 leading-relaxed">{climax.ending}</p>
+          </div>
+
+          {climax.meaning && (
+            <div>
+              <h3 className="text-lg font-bold mb-2">💡 Lets Understand the Climax !!</h3>
+
+              <p className="text-gray-300 leading-relaxed">{climax.meaning}</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* CAST SECTION */}
       <div className="px-8 md:px-16 py-12">
@@ -315,6 +536,32 @@ function MovieDetails() {
           </div>
         </div>
       </div>
+
+      
+
+      {/*best review section */}
+
+      {bestReview && (
+        <div
+          ref={bestReviewRef}
+          className="mt-10 scroll-mt-24 bg-[#1f1f1f] border border-gray-700 rounded-xl p-6"
+        >
+          <h2 className="text-2xl font-bold mb-4">⭐ Best Review</h2>
+
+          <div className="flex justify-between mb-3">
+            <p className="font-semibold">{bestReview.author}</p>
+
+            {bestReview.author_details?.rating && (
+              <span className="text-yellow-400">
+                ⭐ {bestReview.author_details.rating}/10
+              </span>
+            )}
+          </div>
+
+          <p className="text-gray-300 leading-relaxed">{bestReview.content}</p>
+        </div>
+      )}
+
       {/* SIMILAR MOVIES */}
       <div className="px-8 md:px-16 pb-16">
         <h2 className="text-3xl font-bold mb-6">You May Also Like</h2>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useMemo } from "react";
-import { genreids } from "../genreid.js";
+import { genreids } from "../utility/genreid.js";
 import { MovieContext } from "./Moviecontext.jsx";
 import { useNavigate } from "react-router-dom";
 
