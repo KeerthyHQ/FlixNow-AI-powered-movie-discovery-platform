@@ -575,10 +575,6 @@ FlixNow combines movie discovery, trailers, reviews, cast, crew, similar movies,
 
 # 📸 Screenshots
 
-Add screenshots of your application here to showcase the UI.
-
-Example:
-
 ```text
 screenshots/
 ├── home.png
@@ -589,15 +585,15 @@ screenshots/
 └── ai-recommendations.png
 ```
 
-Then add them to this section:
 
-```markdown
+
+
 ![Home Page](screenshots/home.png)
 
 ![Movie Details](screenshots/movie-details.png)
 
 ![AI Recommendations](screenshots/ai-recommendations.png)
-```
+
 
 ---
 
