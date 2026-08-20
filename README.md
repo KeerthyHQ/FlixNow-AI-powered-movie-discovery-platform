@@ -25,6 +25,11 @@ The application combines the **TMDB API** for movie data with **Google Gemini** 
 
 ---
 
+## 🔗 Live Demo
+
+**FlixNow url :** https://flixnow-ai-powered-movie-discovery-platform-a32vi43uz.vercel.app/
+**GitHub Repository:** https://github.com/KeerthyHQ/FlixNow-AI-powered-movie-discovery-platform
+
 ## ✨ Features
 
 ### 🎬 Movie Discovery
