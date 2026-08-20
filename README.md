@@ -586,14 +586,38 @@ screenshots/
 ```
 
 
+### Home
+
+![Home Page](./src/screenshots/home.png)
+
+---
+### Movie Details
+
+![Movie Details](./src/screenshots/movie-details.png)
+
+---
+
+### watchlist
+
+![Watchlist](./src/screenshots/watchlist.png)
+
+---
+
+### Mood Selector
+
+![Mood selector](./src/screenshots/mood-selector.png)
+---
+
+### smart search
+
+![Smart search](./src/screenshots/smart-search.png)
 
 
-![Home Page](screenshots/home.png)
+---
 
-![Movie Details](screenshots/movie-details.png)
+### AI Recommendations
 
 ![AI Recommendations](screenshots/ai-recommendations.png)
-
 
 ---
 
